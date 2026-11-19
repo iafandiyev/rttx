@@ -13,20 +13,22 @@ import UIKit
     private var lastLook = SIMD2<Float>(repeating: 0)
     private var yaw: Float = 0
     private var pitch: Float = -0.2
-    func build(into content: RealityViewContent, evidence: [Evidence], game: GameManager) {
+    func build(evidence: [Evidence], game: GameManager) -> Entity {
         self.game = game
         let root = Entity(); root.name = "Greywood"
         var groundMat = PhysicallyBasedMaterial(); groundMat.baseColor = .init(tint: UIColor(red:0.12,green:0.14,blue:0.15,alpha:1)); groundMat.roughness = .init(floatLiteral:0.34)
         let ground = ModelEntity(mesh:.generatePlane(width:180,depth:180),materials:[groundMat]); ground.position.y = -0.12; root.addChild(ground)
         buildCity(root)
-        let body = ModelEntity(mesh:.generateCapsule(height:1.75,diameter:0.62),materials:[SimpleMaterial(color:UIColor(red:0.14,green:0.16,blue:0.18,alpha:1),roughness:0.8,isMetallic:false)])
-        body.position.y = 0.9; player.addChild(body); player.position = [0,0,0]; root.addChild(player)
+        let body = ModelEntity(mesh:.generateCylinder(height:1.45,radius:0.30),materials:[SimpleMaterial(color:UIColor(red:0.14,green:0.16,blue:0.18,alpha:1),roughness:0.8,isMetallic:false)])
+        body.position.y = 0.82; player.addChild(body)
+        let head = ModelEntity(mesh:.generateSphere(radius:0.23),materials:[SimpleMaterial(color:UIColor(red:0.48,green:0.36,blue:0.29,alpha:1),roughness:0.9,isMetallic:false)]); head.position.y = 1.72; player.addChild(head)
+        player.position = [0,0,0]; root.addChild(player)
         camera.position = [0,2.4,5.6]; camera.look(at:[0,1.1,0],from:camera.position,relativeTo:nil); root.addChild(camera)
         let sun = DirectionalLight(); sun.light.intensity = 650; sun.light.color = .init(white:0.70,alpha:1); sun.shadow = .init(); sun.orientation = simd_quatf(angle:-0.9,axis:[1,0,0]); root.addChild(sun)
         let ambient = PointLight(); ambient.light.intensity = 280; ambient.light.attenuationRadius = 75; ambient.position = [0,18,0]; root.addChild(ambient)
         for (index,e) in evidence.enumerated() { let marker = ModelEntity(mesh:.generateSphere(radius:0.28),materials:[SimpleMaterial(color:.systemRed,roughness:0.22,isMetallic:true)]); marker.position = e.position + [0,0.45,0]; marker.name = e.id; root.addChild(marker); evidenceEntities.append((marker,e)); _ = index }
-        content.add(root)
         timer = Timer.publish(every:0.016,on:.main,in:.common).autoconnect().sink { [weak self] _ in self?.tick() }
+        return root
     }
     private func buildCity(_ root:Entity) {
         let blocks:[(Float,Float,Float,Float,UIColor)] = [(-17,-12,10,22,.init(white:0.22,alpha:1)),(-2,-15,11,15,.init(white:0.30,alpha:1)),(16,-11,12,24,.init(white:0.20,alpha:1)),(-18,14,12,18,.init(white:0.32,alpha:1)),(1,15,10,20,.init(white:0.23,alpha:1)),(19,17,13,16,.init(white:0.29,alpha:1)),(-31,-30,13,12,.init(white:0.25,alpha:1)),(31,-28,16,15,.init(white:0.28,alpha:1)),(-34,30,15,13,.init(white:0.21,alpha:1)),(33,32,13,14,.init(white:0.3,alpha:1))]

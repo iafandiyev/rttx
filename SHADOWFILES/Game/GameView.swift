@@ -6,8 +6,8 @@ struct GameView: View {
     @State private var sceneManager = GameSceneManager()
     var body: some View {
         ZStack {
-            RealityView { content in sceneManager.build(into: content, evidence: Evidence.city, game: game) }
-                .ignoresSafeArea().gesture(DragGesture(minimumDistance: 8).onChanged { value in scene.look(delta: SIMD2(Float(value.translation.width), Float(value.translation.height))) }.onEnded { _ in scene.endLook() })
+            RealityView { content in content.add(sceneManager.build(evidence: Evidence.city, game: game)) }
+                .ignoresSafeArea().gesture(DragGesture(minimumDistance: 8).onChanged { value in sceneManager.look(delta: SIMD2(Float(value.translation.width), Float(value.translation.height))) }.onEnded { _ in sceneManager.endLook() })
                 .overlay(alignment: .topLeading) { VStack(alignment: .leading, spacing: 4) { Text("SHADOW FILES  /  GREYWOOD").font(.caption.bold()).tracking(2).foregroundStyle(.red); Text(game.mission.title).font(.headline); Text(game.mission.objectives[safe: game.mission.progress] ?? "Investigation complete").font(.caption).foregroundStyle(.white.opacity(0.7)) }.padding(14).background(.black.opacity(0.55), in: RoundedRectangle(cornerRadius: 12)).padding() }
             VStack { Spacer(); HStack(alignment: .bottom) {
                 VirtualJoystick(value: $game.move).frame(width: 132,height: 132).padding(.leading,20)
