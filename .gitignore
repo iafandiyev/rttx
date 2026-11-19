@@ -1,0 +1,10 @@
+.DS_Store
+.build/
+DerivedData/
+build/
+Payload/
+*.ipa
+*.xcuserstate
+xcuserdata/
+Backend/.env
+Backend/*.sqlite*
