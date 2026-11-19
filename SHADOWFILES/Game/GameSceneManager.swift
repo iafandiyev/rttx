@@ -34,8 +34,8 @@ import UIKit
             for floor in stride(from:1, to:Int(h)-1, by:3) { let window=ModelEntity(mesh:.generateBox(size:[w*0.78,0.12,0.04]),materials:[SimpleMaterial(color:UIColor(red:0.66,green:0.49,blue:0.29,alpha:0.75),isMetallic:true)]); window.position=[x,Float(floor),z-w*0.39-0.03]; root.addChild(window) }
         }
         // Raised sidewalks, cross streets, and pools of street light create distinct compact districts.
-        for z in stride(from:-70,to:71,by:28) { let road=ModelEntity(mesh:.generateBox(size:[9,0.03,180]),materials:[SimpleMaterial(color:UIColor(white:0.055,alpha:1),roughness:0.2,isMetallic:false)]); road.position=[0,0,z]; root.addChild(road) }
-        for x in stride(from:-70,to:71,by:28) { let road=ModelEntity(mesh:.generateBox(size:[180,0.03,9]),materials:[SimpleMaterial(color:UIColor(white:0.055,alpha:1),roughness:0.2,isMetallic:false)]); road.position=[x,0,0]; root.addChild(road) }
+        for z in stride(from:-70,to:71,by:28) { let road=ModelEntity(mesh:.generateBox(size:[9,0.03,180]),materials:[SimpleMaterial(color:UIColor(white:0.055,alpha:1),roughness:0.2,isMetallic:false)]); road.position=[0,0,Float(z)]; root.addChild(road) }
+        for x in stride(from:-70,to:71,by:28) { let road=ModelEntity(mesh:.generateBox(size:[180,0.03,9]),materials:[SimpleMaterial(color:UIColor(white:0.055,alpha:1),roughness:0.2,isMetallic:false)]); road.position=[Float(x),0,0]; root.addChild(road) }
     }
     func look(delta:SIMD2<Float>) { lastLook=delta }
     func endLook() { yaw -= lastLook.x * 0.0025; pitch = max(-0.75,min(0.2,pitch-lastLook.y*0.0015)); lastLook = .zero }

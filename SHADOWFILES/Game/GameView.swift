@@ -3,10 +3,10 @@ import RealityKit
 
 struct GameView: View {
     @EnvironmentObject private var game: GameManager
-    @State private var scene = GameSceneManager()
+    @State private var sceneManager = GameSceneManager()
     var body: some View {
         ZStack {
-            RealityView { content in scene.build(into: content, evidence: Evidence.city, game: game) }
+            RealityView { content in sceneManager.build(into: content, evidence: Evidence.city, game: game) }
                 .ignoresSafeArea().gesture(DragGesture(minimumDistance: 8).onChanged { value in scene.look(delta: SIMD2(Float(value.translation.width), Float(value.translation.height))) }.onEnded { _ in scene.endLook() })
                 .overlay(alignment: .topLeading) { VStack(alignment: .leading, spacing: 4) { Text("SHADOW FILES  /  GREYWOOD").font(.caption.bold()).tracking(2).foregroundStyle(.red); Text(game.mission.title).font(.headline); Text(game.mission.objectives[safe: game.mission.progress] ?? "Investigation complete").font(.caption).foregroundStyle(.white.opacity(0.7)) }.padding(14).background(.black.opacity(0.55), in: RoundedRectangle(cornerRadius: 12)).padding() }
             VStack { Spacer(); HStack(alignment: .bottom) {
