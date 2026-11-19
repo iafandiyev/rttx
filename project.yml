@@ -8,9 +8,10 @@ settings:
     SWIFT_VERSION: "5.9"
     TARGETED_DEVICE_FAMILY: "1"
     INFOPLIST_KEY_UIUserInterfaceStyle: Dark
-    INFOPLIST_KEY_UILaunchScreen_Generation: YES
     INFOPLIST_KEY_NSLocalNetworkUsageDescription: Connect to a SHADOW FILES multiplayer server on your network.
     INFOPLIST_KEY_NSCameraUsageDescription: Camera access is reserved for future evidence photography.
+    INFOPLIST_FILE: SHADOWFILES/Info.plist
+    GENERATE_INFOPLIST_FILE: NO
     CODE_SIGNING_ALLOWED: NO
 targets:
   SHADOWFILES:
